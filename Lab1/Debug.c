@@ -19,8 +19,10 @@ int main(void) {
     int ounces = totalOunces;
     totalOunces = totalOunces - ounces;
 
-    printf("%d pounds, %d ounces, %.3f ounces remainder\n", pounds, ounces, totalOunces);
+    pritntf("%d pounds, %d ounces, %.3f ounces remainder\n", pounds, ounces, totalOunces);
     return 0;
+
+    // printf("billamount: %f", )
 
     
 
