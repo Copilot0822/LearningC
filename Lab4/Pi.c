@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-
 bool isOdd(int number){
     return (number % 2) != 0;
 }
@@ -9,10 +8,9 @@ int main()
 {
     
     long double pi = 4;
-
     long double terms = 1;
     long double num = 3;
-
+    
     printf("Enter number of terms: ");
 
     int numterms;
@@ -34,7 +32,6 @@ int main()
     pi = pi*terms;
 
     printf("pi is: %Lf", pi);
-
 
     return 0;
 }
