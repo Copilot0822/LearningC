@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <math.h>
+
 
 int baseArray[4] = {0, 0, 0, 0};
 
@@ -70,6 +72,13 @@ void inputs(){
         else{
             printf("\ninvalid parameter: Num1 not positive");
         }
+        if(checkBase(num1, inBase)){
+            good++;
+        }
+        else{
+            printf("\ninvalid parameter: Num1 not Based");
+        }
+
 
 
         //num2 check
@@ -79,18 +88,32 @@ void inputs(){
         else{
             printf("\ninvalid parameter: Num2 not positive");
         }
+        if(checkBase(num2, inBase)){
+            good++;
+        }
+        else{
+            printf("\ninvalid parameter: Num2 not Based");
+        }
 
-        if(outBase >= 2 && num2 <= 10){
+
+
+
+
+        if(outBase >= 2 && outBase <= 10){
             good++;
         }
         else{
             printf("\ninvalid parameter: Output Base");
         }
 
+        
+
+        
+
 
         printf("\ngood: %d\n", good);
 
-        if(good >= 5){
+        if(good >= 7){
             break;
         }
         
@@ -107,12 +130,75 @@ void inputs(){
 
 }
 
+int digitFinder(int num){
+    for(int i = 1; 1; i++){
+        if(num% (int)(pow(10, i)) == num){
+            return i;
+        }
+    }
+}
+int checkBase(int num, int base){
+    int numDigits = digitFinder(num);
+    
+    int out = 1;
+    int arr[19];
 
+    // printf("numdiigits: %d", numDigits);
+
+
+    for(int i = 0; i< numDigits; i++){
+        int digit = num%(int)pow(10, i+1);
+        if(i == 0){
+            arr[i] = digit;
+        }
+        else{
+            arr[i] = (digit-arr[i-1])/pow(10, i);
+
+        }
+
+        if(arr[i] >= base){
+            out = 0;
+        }
+        // printf("\n%d\n", arr[i]);
+    }
+    return out;
+}
+int decimalConverter(int num, int base){
+    int numDigits = digitFinder(num);
+    int arr[19];
+    int out = 0;
+
+    for(int i = 0; i< numDigits; i++){
+        int digit = num%(int)pow(10, i+1);
+        if(i == 0){
+            arr[i] = digit;
+        }
+        else{
+            arr[i] = (digit-arr[i-1])/pow(10, i);
+
+        }
+    }
+    for(int i = 0; i<18; i++){
+        out += arr[i]*pow(base, i);
+    }
+    return out;
+
+
+}
 
 int main(int argc, char const *argv[])
 {
+
+    // printf("%d\n\n", digitFinder(111));
+
+
+    // printf("%d\n\n", checkBase(4210, 4));
+    // printf("\n%d\n", decimalConverter(10, 2));
+
     inputs();
     printf("%d %d %d %d", (baseArray[0]), (baseArray[1]), (baseArray[2]), (baseArray[3]));
+
+    
 
 
     /* code */
