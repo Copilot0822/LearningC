@@ -4,8 +4,7 @@
 bool isOdd(int number){
     return (number % 2) != 0;
 }
-int main()
-{
+int main(){
     
     long double pi = 4;
     long double terms = 1;
