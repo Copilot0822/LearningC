@@ -29,7 +29,7 @@ void inputs(){
     
         scanf(" %c %d %d %d %d", &oper, &inBase, &num1, &num2, &outBase);
 
-        printf("%c %d %d %d %d", oper, inBase, num1, num2, outBase);
+        // printf("%c %d %d %d %d", oper, inBase, num1, num2, outBase);
 
 
         //operator check
@@ -111,7 +111,7 @@ void inputs(){
         
 
 
-        printf("\ngood: %d\n", good);
+        // printf("\ngood: %d\n", good);
 
         if(good >= 7){
             break;
@@ -194,7 +194,29 @@ int toDecimalConverter(int num, int base){
 
 
 }
+int fromDecimalConverter(int num, int base) {
+    // assumes 0 <= num, 2 <= base <= 10
+    int arr[19] = {0};   // least-significant digit at arr[0]
+    int digits = 0;
 
+    // extract digits in base
+    while (num > 0 && digits < 19) {
+        arr[digits++] = num % base;
+        num /= base;
+    }
+
+    // if num == 0, representation is "0"
+    if (digits == 0) digits = 1;
+
+    // pack digits into a base-10 integer (LSB first like your code)
+    int out = 0;
+    int factor = 1;  // 10^i without pow()
+    for (int i = 0; i < digits; i++) {
+        out += arr[i] * factor;
+        factor *= 10;
+    }
+    return out;
+}
 
 int calculate(){
     if(baseArray[0] == 0){
@@ -211,9 +233,9 @@ int calculate(){
     }
 }
 
-// int output(int outputNum, int base){
-
-// }
+void output(int outputNum, int base){
+    printf("= %d (base %d)\n", fromDecimalConverter(outputNum, base), base);
+}
 
 int main(int argc, char const *argv[])
 {
@@ -225,11 +247,12 @@ int main(int argc, char const *argv[])
     // printf("\n%d\n", toDecimalConverter(11, 2));
     // printf("\n%d\n", toDecimalConverter(11, 2));
 
-
-    inputs();
-    printf("%d %d %d %d", (baseArray[0]), (baseArray[1]), (baseArray[2]), (baseArray[3]));
-    printf("\n%d", calculate());
-
+    while(1){
+        inputs();
+        // printf("%d %d %d %d", (baseArray[0]), (baseArray[1]), (baseArray[2]), (baseArray[3]));
+        // printf("\n%d", calculate());
+        output(calculate(), baseArray[3]);
+    }
 
 
     
