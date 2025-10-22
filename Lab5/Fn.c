@@ -7,24 +7,24 @@ int baseArray[4] = {0, 0, 0, 0};
 void inputs(){
     // printf("Give Input ($ 0 0 0 0 to stop): ");
 
-    // char oper;
-    // int inBase;
-    // int num1;
-    // int num2;
-    // int outBase;
+    char oper;
+    int inBase;
+    int num1;
+    int num2;
+    int outBase;
 
     int good = 0;
 
-
+    //breaks once allowed input is aquired
     while(1){
         good = 0;
         printf("Give Input ($ 0 0 0 0 to stop): ");
 
-        char oper;
-        int inBase;
-        int num1;
-        int num2;
-        int outBase;
+        // char oper;
+        // int inBase;
+        // int num1;
+        // int num2;
+        // int outBase;
 
     
         scanf(" %c %d %d %d %d", &oper, &inBase, &num1, &num2, &outBase);
@@ -122,6 +122,15 @@ void inputs(){
 
     }
 
+    baseArray[3] = outBase;
+
+    baseArray[1] = toDecimalConverter(num1, inBase);
+    // baseArray[1] = num1;
+
+    // baseArray[2] = num2;
+
+    baseArray[2] = toDecimalConverter(num2, inBase);
+
 
     
 
@@ -163,9 +172,9 @@ int checkBase(int num, int base){
     }
     return out;
 }
-int decimalConverter(int num, int base){
+int toDecimalConverter(int num, int base){
     int numDigits = digitFinder(num);
-    int arr[19];
+    int arr[19] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     int out = 0;
 
     for(int i = 0; i< numDigits; i++){
@@ -174,17 +183,37 @@ int decimalConverter(int num, int base){
             arr[i] = digit;
         }
         else{
-            arr[i] = (digit-arr[i-1])/pow(10, i);
+            arr[i] = (digit-arr[i-1])/(int)pow(10, i);
 
         }
     }
     for(int i = 0; i<18; i++){
-        out += arr[i]*pow(base, i);
+        out += arr[i]*(int)pow(base, i);
     }
     return out;
 
 
 }
+
+
+int calculate(){
+    if(baseArray[0] == 0){
+        return baseArray[1] + baseArray[2];
+    }
+    else if(baseArray[0] == 1){
+        return baseArray[1] - baseArray[2];
+    }
+    else if(baseArray[0] == 2){
+        return baseArray[1] * baseArray[2];
+    }
+    else{
+        return (int)round((double)baseArray[1] / (double)baseArray[2]);
+    }
+}
+
+// int output(int outputNum, int base){
+
+// }
 
 int main(int argc, char const *argv[])
 {
@@ -193,10 +222,15 @@ int main(int argc, char const *argv[])
 
 
     // printf("%d\n\n", checkBase(4210, 4));
-    // printf("\n%d\n", decimalConverter(10, 2));
+    // printf("\n%d\n", toDecimalConverter(11, 2));
+    // printf("\n%d\n", toDecimalConverter(11, 2));
+
 
     inputs();
     printf("%d %d %d %d", (baseArray[0]), (baseArray[1]), (baseArray[2]), (baseArray[3]));
+    printf("\n%d", calculate());
+
+
 
     
 
