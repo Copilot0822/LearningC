@@ -18,7 +18,7 @@ void inputs(){
     //breaks once allowed input is aquired
     while(1){
         good = 0;
-        printf("Give Input ($ 0 0 0 0 to stop): ");
+        printf("Give Input ('$' to stop): ");
 
         // char oper;
         // int inBase;
@@ -27,7 +27,12 @@ void inputs(){
         // int outBase;
 
     
-        scanf(" %c %d %d %d %d", &oper, &inBase, &num1, &num2, &outBase);
+        // scanf(" %c %d %d %d %d", &oper, &inBase, &num1, &num2, &outBase);
+        scanf(" %c", &oper);
+
+        
+
+        
 
         // printf("%c %d %d %d %d", oper, inBase, num1, num2, outBase);
 
@@ -37,7 +42,12 @@ void inputs(){
             printf("out");
             exit(0);
         }
-        else if(oper == '+'){
+
+        scanf(" %d %d %d %d", &inBase, &num1, &num2, &outBase);
+
+
+
+        if(oper == '+'){
             baseArray[0] = 0;
             good++;
         }
@@ -208,7 +218,7 @@ int fromDecimalConverter(int num, int base) {
     // if num == 0, representation is "0"
     if (digits == 0) digits = 1;
 
-    // pack digits into a base-10 integer (LSB first like your code)
+    // pack digits into a base-10 integer
     int out = 0;
     int factor = 1;  // 10^i without pow()
     for (int i = 0; i < digits; i++) {
