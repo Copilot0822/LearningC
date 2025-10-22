@@ -181,7 +181,7 @@ int checkBase(int num, int base)
 int toDecimalConverter(int num, int base)
 {
     int numDigits = digitFinder(num);
-    int arr[19] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int arr[19] = {0};
     int out = 0;
 
     for (int i = 0; i < numDigits; i++)
