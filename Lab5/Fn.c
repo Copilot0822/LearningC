@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <math.h>
 
-
 int baseArray[4] = {0, 0, 0, 0};
 
-void inputs(){
+void inputs()
+{
     // printf("Give Input ($ 0 0 0 0 to stop): ");
 
     char oper;
@@ -15,8 +15,9 @@ void inputs(){
 
     int good = 0;
 
-    //breaks once allowed input is aquired
-    while(1){
+    // breaks once allowed input is aquired
+    while (1)
+    {
         good = 0;
         printf("Give Input ('$' to stop): ");
 
@@ -26,110 +27,106 @@ void inputs(){
         // int num2;
         // int outBase;
 
-    
         // scanf(" %c %d %d %d %d", &oper, &inBase, &num1, &num2, &outBase);
         scanf(" %c", &oper);
 
-        
-
-        
-
         // printf("%c %d %d %d %d", oper, inBase, num1, num2, outBase);
 
-
-        //operator check
-        if(oper == '$') {
+        // operator check
+        if (oper == '$')
+        {
             printf("out");
             exit(0);
         }
 
         scanf(" %d %d %d %d", &inBase, &num1, &num2, &outBase);
 
-
-
-        if(oper == '+'){
+        if (oper == '+')
+        {
             baseArray[0] = 0;
             good++;
         }
-        else if(oper == '-'){
+        else if (oper == '-')
+        {
             baseArray[0] = 1;
             good++;
         }
-        else if(oper == '*'){
+        else if (oper == '*')
+        {
             baseArray[0] = 2;
             good++;
         }
-        else if(oper == '/'){
+        else if (oper == '/')
+        {
             baseArray[0] = 3;
             good++;
         }
-        else{
+        else
+        {
             printf("\ninvalid parameter: Operator, %c", oper);
         }
 
         // in base check
-        if(inBase>= 2 && inBase<=10){
+        if (inBase >= 2 && inBase <= 10)
+        {
             good++;
         }
-        else{
+        else
+        {
             printf("\ninvalid parameter: Input Base");
         }
 
-        //num1 check
-        if(num1 > 0){
-            good ++;
-        }
-        else{
-            printf("\ninvalid parameter: Num1 not positive");
-        }
-        if(checkBase(num1, inBase)){
+        // num1 check
+        if (num1 > 0)
+        {
             good++;
         }
-        else{
+        else
+        {
+            printf("\ninvalid parameter: Num1 not positive");
+        }
+        if (checkBase(num1, inBase))
+        {
+            good++;
+        }
+        else
+        {
             printf("\ninvalid parameter: Num1 not Based");
         }
 
-
-
-        //num2 check
-        if(num2 > 0){
+        // num2 check
+        if (num2 > 0)
+        {
             good++;
         }
-        else{
+        else
+        {
             printf("\ninvalid parameter: Num2 not positive");
         }
-        if(checkBase(num2, inBase)){
+        if (checkBase(num2, inBase))
+        {
             good++;
         }
-        else{
+        else
+        {
             printf("\ninvalid parameter: Num2 not Based");
         }
 
-
-
-
-
-        if(outBase >= 2 && outBase <= 10){
+        if (outBase >= 2 && outBase <= 10)
+        {
             good++;
         }
-        else{
+        else
+        {
             printf("\ninvalid parameter: Output Base");
         }
 
-        
-
-        
-
-
         // printf("\ngood: %d\n", good);
 
-        if(good >= 7){
+        if (good >= 7)
+        {
             break;
         }
-        
-
-
-
     }
 
     baseArray[3] = outBase;
@@ -140,110 +137,121 @@ void inputs(){
     // baseArray[2] = num2;
 
     baseArray[2] = toDecimalConverter(num2, inBase);
-
-
-    
-
-
-
-
 }
 
-int digitFinder(int num){
-    for(int i = 1; 1; i++){
-        if(num% (int)(pow(10, i)) == num){
+int digitFinder(int num)
+{
+    for (int i = 1; 1; i++)
+    {
+        if (num % (int)(pow(10, i)) == num)
+        {
             return i;
         }
     }
 }
-int checkBase(int num, int base){
+int checkBase(int num, int base)
+{
     int numDigits = digitFinder(num);
-    
+
     int out = 1;
     int arr[19];
 
     // printf("numdiigits: %d", numDigits);
 
-
-    for(int i = 0; i< numDigits; i++){
-        int digit = num%(int)pow(10, i+1);
-        if(i == 0){
+    for (int i = 0; i < numDigits; i++)
+    {
+        int digit = num % (int)pow(10, i + 1);
+        if (i == 0)
+        {
             arr[i] = digit;
         }
-        else{
-            arr[i] = (digit-arr[i-1])/pow(10, i);
-
+        else
+        {
+            arr[i] = (digit - arr[i - 1]) / pow(10, i);
         }
 
-        if(arr[i] >= base){
+        if (arr[i] >= base)
+        {
             out = 0;
         }
         // printf("\n%d\n", arr[i]);
     }
     return out;
 }
-int toDecimalConverter(int num, int base){
+int toDecimalConverter(int num, int base)
+{
     int numDigits = digitFinder(num);
-    int arr[19] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    int arr[19] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int out = 0;
 
-    for(int i = 0; i< numDigits; i++){
-        int digit = num%(int)pow(10, i+1);
-        if(i == 0){
+    for (int i = 0; i < numDigits; i++)
+    {
+        int digit = num % (int)pow(10, i + 1);
+        if (i == 0)
+        {
             arr[i] = digit;
         }
-        else{
-            arr[i] = (digit-arr[i-1])/(int)pow(10, i);
-
+        else
+        {
+            arr[i] = (digit - arr[i - 1]) / (int)pow(10, i);
         }
     }
-    for(int i = 0; i<18; i++){
-        out += arr[i]*(int)pow(base, i);
+    for (int i = 0; i < 18; i++)
+    {
+        out += arr[i] * (int)pow(base, i);
     }
     return out;
-
-
 }
-int fromDecimalConverter(int num, int base) {
+int fromDecimalConverter(int num, int base)
+{
     // assumes 0 <= num, 2 <= base <= 10
-    int arr[19] = {0};   // least-significant digit at arr[0]
+    int arr[19] = {0}; // least-significant digit at arr[0]
     int digits = 0;
 
     // extract digits in base
-    while (num > 0 && digits < 19) {
+    while (num > 0 && digits < 19)
+    {
         arr[digits++] = num % base;
         num /= base;
     }
 
     // if num == 0, representation is "0"
-    if (digits == 0) digits = 1;
+    if (digits == 0)
+        digits = 1;
 
     // pack digits into a base-10 integer
     int out = 0;
-    int factor = 1;  // 10^i without pow()
-    for (int i = 0; i < digits; i++) {
+    int factor = 1; // 10^i without pow()
+    for (int i = 0; i < digits; i++)
+    {
         out += arr[i] * factor;
         factor *= 10;
     }
     return out;
 }
 
-int calculate(){
-    if(baseArray[0] == 0){
+int calculate()
+{
+    if (baseArray[0] == 0)
+    {
         return baseArray[1] + baseArray[2];
     }
-    else if(baseArray[0] == 1){
+    else if (baseArray[0] == 1)
+    {
         return baseArray[1] - baseArray[2];
     }
-    else if(baseArray[0] == 2){
+    else if (baseArray[0] == 2)
+    {
         return baseArray[1] * baseArray[2];
     }
-    else{
+    else
+    {
         return (int)round((double)baseArray[1] / (double)baseArray[2]);
     }
 }
 
-void output(int outputNum, int base){
+void output(int outputNum, int base)
+{
     printf("= %d (base %d)\n", fromDecimalConverter(outputNum, base), base);
 }
 
@@ -252,21 +260,17 @@ int main(int argc, char const *argv[])
 
     // printf("%d\n\n", digitFinder(111));
 
-
     // printf("%d\n\n", checkBase(4210, 4));
     // printf("\n%d\n", toDecimalConverter(11, 2));
     // printf("\n%d\n", toDecimalConverter(11, 2));
 
-    while(1){
+    while (1)
+    {
         inputs();
         // printf("%d %d %d %d", (baseArray[0]), (baseArray[1]), (baseArray[2]), (baseArray[3]));
         // printf("\n%d", calculate());
         output(calculate(), baseArray[3]);
     }
-
-
-    
-
 
     /* code */
     return 0;
