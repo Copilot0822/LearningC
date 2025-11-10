@@ -5,7 +5,7 @@
 int main()
 {
     char input[256];
-    int letterCount[26] = {0}; // Array to store the count of each letter initialized to zeros
+    int letterCount[255] = {0}; // Array to store the count of each letter initialized to zeros
 
     printf("Enter text strings (press Enter on an empty line to exit):\n");
 
@@ -19,12 +19,23 @@ int main()
             break;
         }
         // Your Code should be implemented here
+
+        // printf("%d", strlen(input) - 1);
+
+        for (int ip = 0; ip < strlen(input)-1; ip++)
+        {
+            letterCount[(unsigned char)input[ip]] ++;
+        }
         // Iterate through the characters in the input
         // Check if the character is a letter (A-Z or a-z)
         // Increment the corresponding count in the array
     }
     // More of your code here to
     // Display the letter counts
+
+    for(int ic = 65; ic <= 90; ic++){
+        printf("Letter: %c %d \n", ic, letterCount[ic] + letterCount[ic+32]);
+    }
 
     return 0;
 }
