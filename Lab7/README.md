@@ -2,7 +2,7 @@
 
 ## Part1: `correlation.c`
 ### Input
-This file inputs a set of datapoints to get the std dev and average from. The inputs are structured as `X Y` and when input is completed the end command is `$`.
+This file inputs a set of datapoints to get the std dev and average from. The inputs are structured as `X Y`
 
 ### Output
 This file outputs the std dev of `X` and `Y`, and also the correlation
