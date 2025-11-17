@@ -23,7 +23,14 @@ int initializeBoard()
 
     return size;
 }
+int checkWin(char gameboard[11][11], int size){
+    for(int i = 0;i<size+1;i++){
+        for(int j = 0;size+1>j;i++){
+            
+        }
+    }
 
+}
 void printBoard(char gameboard[11][11])
 {
     int column = 0;
@@ -84,7 +91,7 @@ int modeSelect()
 {
     printf("Mode 1 for P2P, 0 for PvAI: ");
     int out;
-    scanf("%d", out);
+    scanf("%d", &out);
     printf("\n");
     return out;
 }
@@ -105,29 +112,53 @@ int main(int argc, char const *argv[])
 
     int mode = modeSelect();
 
-    if(mode){ // p2p
+    if (mode)
+    { // p2p
         int player = 1;
-        while(1){
+        while (1)
+        {
             printBoard(board);
-            printf("Player1 Enter Placement: (RowColumn)");
-            int input;
-            scanf("%d", input);
-            
+            int row, col;
+            while (1)
+            {
+                printf("Player%d Enter Placement: (RowColumn)", player);
+                int input;
 
+                scanf("%d", &input);
+                printf("\n");
 
+                row = input / 10;
+                col = input % 10;
+
+                if (col > 0 && row > 0 && col <= size && row <= size && board[row - 1][col - 1] != 'x' && board[row - 1][col - 1] != 'o')
+                {
+                    break;
+                }
+                printf("Not Allowed\n");
+            }
+            if (player == 1)
+            {
+                board[row - 1][col - 1] = 'x';
+                player = 2;
+            }
+            else
+            {
+                board[row - 1][col - 1] = 'o';
+                player = 1;
+            }
+            printBoard(board);
         }
         // printBoard(board);
+    }
+    else
+    {
 
     }
-    else{
-
-    }
-
 
     // board[1][0] = 'o';
 
     printBoard(board);
-    
+
     /* code */
     return 0;
 }
