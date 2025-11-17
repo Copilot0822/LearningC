@@ -80,7 +80,14 @@ void printBoard(char gameboard[11][11])
         }
     }
 }
-
+int modeSelect()
+{
+    printf("Mode 1 for P2P, 0 for PvAI: ");
+    int out;
+    scanf("%d", out);
+    printf("\n");
+    return out;
+}
 int main(int argc, char const *argv[])
 {
     int size = initializeBoard();
@@ -96,12 +103,31 @@ int main(int argc, char const *argv[])
         /* code */
     }
 
+    int mode = modeSelect();
+
+    if(mode){ // p2p
+        int player = 1;
+        while(1){
+            printBoard(board);
+            printf("Player1 Enter Placement: (RowColumn)");
+            int input;
+            scanf("%d", input);
+            
 
 
-    board[1][0] = 'o';
+        }
+        // printBoard(board);
+
+    }
+    else{
+
+    }
+
+
+    // board[1][0] = 'o';
 
     printBoard(board);
-
+    
     /* code */
     return 0;
 }
