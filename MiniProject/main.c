@@ -23,14 +23,73 @@ int initializeBoard()
 
     return size;
 }
-int checkWin(char gameboard[11][11], int size){
-    for(int i = 0;i<size+1;i++){
-        for(int j = 0;size+1>j;i++){
-            
+char checkWin(char gameboard[11][11], int size)
+{
+    int i, j;
+
+    /* check rows */
+    for (i = 0; i < size; i++) {
+        int allX = 1;
+        int allO = 1;
+
+        for (j = 0; j < size; j++) {
+            char c = gameboard[i][j];
+            if (c != 'x') allX = 0;
+            if (c != 'o') allO = 0;
         }
+
+        if (allX) return 'x';
+        if (allO) return 'o';
     }
 
+    /* check columns */
+    for (j = 0; j < size; j++) {
+        int allX = 1;
+        int allO = 1;
+
+        for (i = 0; i < size; i++) {
+            char c = gameboard[i][j];
+            if (c != 'x') allX = 0;
+            if (c != 'o') allO = 0;
+        }
+
+        if (allX) return 'x';
+        if (allO) return 'o';
+    }
+
+    /* check main diagonal (0,0) -> (size-1,size-1) */
+    {
+        int allX = 1;
+        int allO = 1;
+
+        for (i = 0; i < size; i++) {
+            char c = gameboard[i][i];
+            if (c != 'x') allX = 0;
+            if (c != 'o') allO = 0;
+        }
+
+        if (allX) return 'x';
+        if (allO) return 'o';
+    }
+
+    /* check anti-diagonal (0,size-1) -> (size-1,0) */
+    {
+        int allX = 1;
+        int allO = 1;
+
+        for (i = 0; i < size; i++) {
+            char c = gameboard[i][size - 1 - i];
+            if (c != 'x') allX = 0;
+            if (c != 'o') allO = 0;
+        }
+
+        if (allX) return 'x';
+        if (allO) return 'o';
+    }
+
+    return 'b';  /* no winner */
 }
+
 void printBoard(char gameboard[11][11])
 {
     int column = 0;
@@ -115,39 +174,116 @@ int main(int argc, char const *argv[])
     if (mode)
     { // p2p
         int player = 1;
-        while (1)
+        int p1 = 0;
+        int p2 = 0;
+
+
+        while(1)
         {
-            printBoard(board);
-            int row, col;
             while (1)
             {
-                printf("Player%d Enter Placement: (RowColumn)", player);
-                int input;
-
-                scanf("%d", &input);
-                printf("\n");
-
-                row = input / 10;
-                col = input % 10;
-
-                if (col > 0 && row > 0 && col <= size && row <= size && board[row - 1][col - 1] != 'x' && board[row - 1][col - 1] != 'o')
+                printBoard(board);
+                int row, col;
+                while (1)
                 {
+                    printf("Player%d Enter Placement: (RowColumn)", player);
+                    int input;
+
+                    scanf("%d", &input);
+                    printf("\n");
+
+                    row = input / 10;
+                    col = input % 10;
+
+                    if (col > 0 && row > 0 && col <= size && row <= size && board[row - 1][col - 1] != 'x' && board[row - 1][col - 1] != 'o')
+                    {
+                        break;
+                    }
+                    printf("Not Allowed\n");
+                }
+                if (player == 1)
+                {
+                    board[row - 1][col - 1] = 'x';
+                    player = 2;
+                }
+                else
+                {
+                    board[row - 1][col - 1] = 'o';
+                    player = 1;
+                }
+                if(checkWin(board, size) == 'x'){
+                    p1++;
+                    break;
+
+                }
+                else if(checkWin(board, size) == 'o'){
+                    p2++;
                     break;
                 }
-                printf("Not Allowed\n");
+
+                // printBoard(board);
+                // printf("\n%c\n", checkWin(board, size));
             }
-            if (player == 1)
-            {
-                board[row - 1][col - 1] = 'x';
+
+
+            printf("Play again: (y/n): ");
+            char playagain;
+            scanf("%c", &playagain);
+            printf("player1: %d, player2: %d", p1, p2);
+            if(playagain == 'y'){
                 player = 2;
             }
-            else
-            {
-                board[row - 1][col - 1] = 'o';
-                player = 1;
+            else{
+                break;
             }
-            printBoard(board);
+            
+            
+            while (1)
+            {
+                printBoard(board);
+                int row, col;
+                while (1)
+                {
+                    printf("Player%d Enter Placement: (RowColumn)", player);
+                    int input;
+
+                    scanf("%d", &input);
+                    printf("\n");
+
+                    row = input / 10;
+                    col = input % 10;
+
+                    if (col > 0 && row > 0 && col <= size && row <= size && board[row - 1][col - 1] != 'x' && board[row - 1][col - 1] != 'o')
+                    {
+                        break;
+                    }
+                    printf("Not Allowed\n");
+                }
+                if (player == 1)
+                {
+                    board[row - 1][col - 1] = 'o';
+                    player = 2;
+                }
+                else
+                {
+                    board[row - 1][col - 1] = 'x';
+                    player = 1;
+                }
+                if(checkWin(board, size) == 'x'||checkWin(board, size) == 'o') ;
+
+                // printBoard(board);
+                // printf("\n%c\n", checkWin(board, size));
+            }
+            
+
         }
+
+
+
+
+
+
+
         // printBoard(board);
     }
     else
