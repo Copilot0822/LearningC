@@ -174,6 +174,7 @@ int main(void)
                     }
                     printf("Not Allowed\n");
                 }
+                
 
                 char mark = (player == 1) ? p1Mark : p2Mark;
                 board[row - 1][col - 1] = mark;
