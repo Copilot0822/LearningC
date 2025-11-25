@@ -139,15 +139,15 @@ int main(void)
         int p1 = 0;   /* score for human 1 */
         int p2 = 0;   /* score for human 2 */
 
-        /* player 1 starts as 'x', player 2 as 'o' */
+        
         char p1Mark = 'x';
         char p2Mark = 'o';
 
-        while (1) {   /* multiple games */
+        while (1) {   
 
             clearBoard(board, size);
 
-            /* X always goes first; whoever is 'x' starts */
+        
             int startingPlayer = (p1Mark == 'x') ? 1 : 2;
             int player = startingPlayer;
             int moves = 0;
@@ -157,7 +157,7 @@ int main(void)
             printf("Player 1 is '%c', Player 2 is '%c'.\n", p1Mark, p2Mark);
             printf("Player %d ('x') goes first.\n\n", startingPlayer);
 
-            while (1) {  /* single game loop */
+            while (1) {  
                 printBoard(board, size);
 
                 int row, col;
@@ -184,7 +184,7 @@ int main(void)
                 if (winner != 'b' || moves == size * size)
                     break;
 
-                player = 3 - player; /* toggle 1 <-> 2 */
+                player = 3 - player; 
             }
 
             printBoard(board, size);
@@ -203,18 +203,110 @@ int main(void)
 
             printf("Play again (y/n): ");
             char playagain;
-            scanf(" %c", &playagain);  /* space skips newline */
+            scanf(" %c", &playagain);  
             if (playagain != 'y' && playagain != 'Y')
                 break;
 
-            /* swap marks so who is X/O alternates */
+            
             char tmp = p1Mark;
             p1Mark = p2Mark;
             p2Mark = tmp;
         }
 
     } else {
-        /* PvAI not implemented yet */
+        int p1 = 0;
+        int ai = 0;
+
+        char p1Mark = 'x';
+        char aiMark = 'o';
+
+        while (1) {
+
+            clearBoard(board, size);
+
+            int startingPlayer = (p1Mark == 'x') ? 1 : 2;
+            int player = startingPlayer;
+            int moves = 0;
+            char winner = 'b';
+
+            printf("New game!\n");
+            printf("Player 1 is '%c', Computer is '%c'.\n", p1Mark, aiMark);
+            printf("Player %d ('x') goes first.\n\n", startingPlayer);
+
+            while (1) {
+                printBoard(board, size);
+
+                int row, col;
+
+                if (player == 1) {
+                    while (1) {
+                        printf("Player1 Enter Placement: row col ");
+                        scanf("%d %d", &row, &col);
+                        printf("\n");
+
+                        if (row > 0 && col > 0 &&
+                            row <= size && col <= size &&
+                            board[row - 1][col - 1] != 'x' &&
+                            board[row - 1][col - 1] != 'o') {
+                            break;
+                        }
+                        printf("Not Allowed\n");
+                    }
+                } else {
+                    // int tries = 0;
+                    // while (1) {
+                    //     row = (rand() % size) + 1;
+                    //     col = (rand() % size) + 1;
+                    //     if (board[row - 1][col - 1] != 'x' &&
+                    //         board[row - 1][col - 1] != 'o') {
+                    //         break;
+                    //     }
+                    //     tries++;
+                    //     if (tries > size * size) break;
+                    // }
+                    // printf("Computer plays: %d %d\n\n", row, col);
+                    
+                }
+
+                char mark;
+                if (player == 1) mark = p1Mark;
+                else mark = aiMark;
+
+                board[row - 1][col - 1] = mark;
+                moves++;
+
+                winner = checkWin(board, size);
+                if (winner != 'b' || moves == size * size)
+                    break;
+
+                if (player == 1) player = 2;
+                else player = 1;
+            }
+
+            printBoard(board, size);
+
+            if (winner == p1Mark) {
+                printf("Player 1 (%c) wins!\n", p1Mark);
+                p1++;
+            } else if (winner == aiMark) {
+                printf("Computer (%c) wins!\n", aiMark);
+                ai++;
+            } else {
+                printf("It's a draw.\n");
+            }
+
+            printf("Score: Player1=%d, Computer=%d\n", p1, ai);
+
+            printf("Play again (y/n): ");
+            char playagain;
+            scanf(" %c", &playagain);
+            if (playagain != 'y' && playagain != 'Y')
+                break;
+
+            char tmp = p1Mark;
+            p1Mark = aiMark;
+            aiMark = tmp;
+        }
     }
 
     return 0;
