@@ -7,33 +7,45 @@ char checkWin(char gameboard[11][11], int size)
     int i, j;
 
     /* check rows */
-    for (i = 0; i < size; i++) {
+    for (i = 0; i < size; i++)
+    {
         int allX = 1;
         int allO = 1;
 
-        for (j = 0; j < size; j++) {
+        for (j = 0; j < size; j++)
+        {
             char c = gameboard[i][j];
-            if (c != 'x') allX = 0;
-            if (c != 'o') allO = 0;
+            if (c != 'x')
+                allX = 0;
+            if (c != 'o')
+                allO = 0;
         }
 
-        if (allX) return 'x';
-        if (allO) return 'o';
+        if (allX)
+            return 'x';
+        if (allO)
+            return 'o';
     }
 
     /* check columns */
-    for (j = 0; j < size; j++) {
+    for (j = 0; j < size; j++)
+    {
         int allX = 1;
         int allO = 1;
 
-        for (i = 0; i < size; i++) {
+        for (i = 0; i < size; i++)
+        {
             char c = gameboard[i][j];
-            if (c != 'x') allX = 0;
-            if (c != 'o') allO = 0;
+            if (c != 'x')
+                allX = 0;
+            if (c != 'o')
+                allO = 0;
         }
 
-        if (allX) return 'x';
-        if (allO) return 'o';
+        if (allX)
+            return 'x';
+        if (allO)
+            return 'o';
     }
 
     /* main diagonal */
@@ -41,14 +53,19 @@ char checkWin(char gameboard[11][11], int size)
         int allX = 1;
         int allO = 1;
 
-        for (i = 0; i < size; i++) {
+        for (i = 0; i < size; i++)
+        {
             char c = gameboard[i][i];
-            if (c != 'x') allX = 0;
-            if (c != 'o') allO = 0;
+            if (c != 'x')
+                allX = 0;
+            if (c != 'o')
+                allO = 0;
         }
 
-        if (allX) return 'x';
-        if (allO) return 'o';
+        if (allX)
+            return 'x';
+        if (allO)
+            return 'o';
     }
 
     /* anti-diagonal */
@@ -56,17 +73,22 @@ char checkWin(char gameboard[11][11], int size)
         int allX = 1;
         int allO = 1;
 
-        for (i = 0; i < size; i++) {
+        for (i = 0; i < size; i++)
+        {
             char c = gameboard[i][size - 1 - i];
-            if (c != 'x') allX = 0;
-            if (c != 'o') allO = 0;
+            if (c != 'x')
+                allX = 0;
+            if (c != 'o')
+                allO = 0;
         }
 
-        if (allX) return 'x';
-        if (allO) return 'o';
+        if (allX)
+            return 'x';
+        if (allO)
+            return 'o';
     }
 
-    return 'b';  /* no winner */
+    return 'b'; /* no winner */
 }
 
 void clearBoard(char b[11][11], int size)
@@ -78,8 +100,10 @@ void clearBoard(char b[11][11], int size)
 
 void printBoard(char gameboard[11][11], int size)
 {
-    for (int r = 0; r < size; ++r) {
-        for (int c = 0; c < size; ++c) {
+    for (int r = 0; r < size; ++r)
+    {
+        for (int c = 0; c < size; ++c)
+        {
             char ch = gameboard[r][c];
             if (ch == 'x' || ch == 'o')
                 printf(" %c ", ch);
@@ -90,8 +114,10 @@ void printBoard(char gameboard[11][11], int size)
                 printf("|");
         }
         printf("\n");
-        if (r < size - 1) {
-            for (int c = 0; c < size; ++c) {
+        if (r < size - 1)
+        {
+            for (int c = 0; c < size; ++c)
+            {
                 if (c == 0)
                     printf(" - ");
                 else
@@ -134,20 +160,20 @@ int main(void)
     int size = initializeBoard();
     int mode = modeSelect();
 
-    if (mode) { /* P2P */
+    if (mode)
+    { /* P2P */
 
-        int p1 = 0;   /* score for human 1 */
-        int p2 = 0;   /* score for human 2 */
+        int p1 = 0; /* score for human 1 */
+        int p2 = 0; /* score for human 2 */
 
-        
         char p1Mark = 'x';
         char p2Mark = 'o';
 
-        while (1) {   
+        while (1)
+        {
 
             clearBoard(board, size);
 
-        
             int startingPlayer = (p1Mark == 'x') ? 1 : 2;
             int player = startingPlayer;
             int moves = 0;
@@ -157,11 +183,13 @@ int main(void)
             printf("Player 1 is '%c', Player 2 is '%c'.\n", p1Mark, p2Mark);
             printf("Player %d ('x') goes first.\n\n", startingPlayer);
 
-            while (1) {  
+            while (1)
+            {
                 printBoard(board, size);
 
                 int row, col;
-                while (1) {
+                while (1)
+                {
                     printf("Player%d Enter Placement: row col ", player);
                     scanf("%d %d", &row, &col);
                     printf("\n");
@@ -169,12 +197,12 @@ int main(void)
                     if (row > 0 && col > 0 &&
                         row <= size && col <= size &&
                         board[row - 1][col - 1] != 'x' &&
-                        board[row - 1][col - 1] != 'o') {
+                        board[row - 1][col - 1] != 'o')
+                    {
                         break;
                     }
                     printf("Not Allowed\n");
                 }
-                
 
                 char mark = (player == 1) ? p1Mark : p2Mark;
                 board[row - 1][col - 1] = mark;
@@ -184,18 +212,23 @@ int main(void)
                 if (winner != 'b' || moves == size * size)
                     break;
 
-                player = 3 - player; 
+                player = 3 - player;
             }
 
             printBoard(board, size);
 
-            if (winner == p1Mark) {
+            if (winner == p1Mark)
+            {
                 printf("Player 1 (%c) wins!\n", p1Mark);
                 p1++;
-            } else if (winner == p2Mark) {
+            }
+            else if (winner == p2Mark)
+            {
                 printf("Player 2 (%c) wins!\n", p2Mark);
                 p2++;
-            } else {
+            }
+            else
+            {
                 printf("It's a draw.\n");
             }
 
@@ -203,24 +236,25 @@ int main(void)
 
             printf("Play again (y/n): ");
             char playagain;
-            scanf(" %c", &playagain);  
+            scanf(" %c", &playagain);
             if (playagain != 'y' && playagain != 'Y')
                 break;
 
-            
             char tmp = p1Mark;
             p1Mark = p2Mark;
             p2Mark = tmp;
         }
-
-    } else {
+    }
+    else
+    {
         int p1 = 0;
         int ai = 0;
 
         char p1Mark = 'x';
         char aiMark = 'o';
 
-        while (1) {
+        while (1)
+        {
 
             clearBoard(board, size);
 
@@ -233,13 +267,16 @@ int main(void)
             printf("Player 1 is '%c', Computer is '%c'.\n", p1Mark, aiMark);
             printf("Player %d ('x') goes first.\n\n", startingPlayer);
 
-            while (1) {
+            while (1)
+            {
                 printBoard(board, size);
 
                 int row, col;
 
-                if (player == 1) {
-                    while (1) {
+                if (player == 1)
+                {
+                    while (1)
+                    {
                         printf("Player1 Enter Placement: row col ");
                         scanf("%d %d", &row, &col);
                         printf("\n");
@@ -247,30 +284,89 @@ int main(void)
                         if (row > 0 && col > 0 &&
                             row <= size && col <= size &&
                             board[row - 1][col - 1] != 'x' &&
-                            board[row - 1][col - 1] != 'o') {
+                            board[row - 1][col - 1] != 'o')
+                        {
                             break;
                         }
                         printf("Not Allowed\n");
                     }
-                } else {
-                    // int tries = 0;
-                    // while (1) {
-                    //     row = (rand() % size) + 1;
-                    //     col = (rand() % size) + 1;
-                    //     if (board[row - 1][col - 1] != 'x' &&
-                    //         board[row - 1][col - 1] != 'o') {
-                    //         break;
-                    //     }
-                    //     tries++;
-                    //     if (tries > size * size) break;
-                    // }
-                    // printf("Computer plays: %d %d\n\n", row, col);
-                    
+                }
+                else
+                {
+                    if (player == 1)
+                    {
+                        while (1)
+                        {
+                            printf("Player1 Enter Placement: row col ");
+                            scanf("%d %d", &row, &col);
+                            printf("\n");
+
+                            if (row > 0 && col > 0 &&
+                                row <= size && col <= size &&
+                                board[row - 1][col - 1] != 'x' &&
+                                board[row - 1][col - 1] != 'o')
+                            {
+                                break;
+                            }
+                            printf("Not Allowed\n");
+                        }
+                    }
+                    else
+                    {
+                        int rowBlock = -1, colBlock = -1;
+                        for (int r = 0; r < size; r++)
+                        {
+                            for (int c = 0; c < size; c++)
+                            {
+                                if (board[r][c] != 'x' && board[r][c] != 'o')
+                                {
+                                    board[r][c] = p1Mark;
+                                    if (checkWin(board, size) == p1Mark)
+                                    {
+                                        rowBlock = r;
+                                        colBlock = c;
+                                    }
+                                    board[r][c] = ' ';
+                                    if (rowBlock != -1)
+                                        break;
+                                }
+                            }
+                            if (rowBlock != -1)
+                                break;
+                        }
+
+                        if (rowBlock != -1)
+                        {
+                            row = rowBlock + 1;
+                            col = colBlock + 1;
+                        }
+                        else
+                        {
+                            int tries = 0;
+                            while (1)
+                            {
+                                row = (rand() % size) + 1;
+                                col = (rand() % size) + 1;
+                                if (board[row - 1][col - 1] != 'x' &&
+                                    board[row - 1][col - 1] != 'o')
+                                {
+                                    break;
+                                }
+                                tries++;
+                                if (tries > size * size)
+                                    break;
+                            }
+                        }
+
+                        printf("Computer plays: %d %d\n\n", row, col);
+                    }
                 }
 
                 char mark;
-                if (player == 1) mark = p1Mark;
-                else mark = aiMark;
+                if (player == 1)
+                    mark = p1Mark;
+                else
+                    mark = aiMark;
 
                 board[row - 1][col - 1] = mark;
                 moves++;
@@ -279,19 +375,26 @@ int main(void)
                 if (winner != 'b' || moves == size * size)
                     break;
 
-                if (player == 1) player = 2;
-                else player = 1;
+                if (player == 1)
+                    player = 2;
+                else
+                    player = 1;
             }
 
             printBoard(board, size);
 
-            if (winner == p1Mark) {
+            if (winner == p1Mark)
+            {
                 printf("Player 1 (%c) wins!\n", p1Mark);
                 p1++;
-            } else if (winner == aiMark) {
+            }
+            else if (winner == aiMark)
+            {
                 printf("Computer (%c) wins!\n", aiMark);
                 ai++;
-            } else {
+            }
+            else
+            {
                 printf("It's a draw.\n");
             }
 
