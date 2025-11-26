@@ -1,6 +1,34 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 char board[11][11];
+
+#define WIN_NONE 0
+#define WIN_ROW 1
+#define WIN_COL 2
+#define WIN_MAIN_DIAG 3
+#define WIN_ANTI_DIAG 4
+
+typedef struct
+{
+    int games_played;
+    int wins_player1;
+    int wins_player2;
+    int draws;
+    int *win_patterns; // Dynamic array : tracks HOW games were won
+    int pattern_count;
+    int pattern_capacity;
+} GameStats;
+
+// Required functions :
+GameStats *createGameStats();
+void updateStats(GameStats *stats, char winner, int win_type);
+void freeGameStats(GameStats *stats);
+void printStatistics(const GameStats *stats);
+
+int last_win_type = WIN_NONE;
+char currentP1 = 'x';
+char currentP2 = 'o';
 
 char checkWin(char gameboard[11][11], int size)
 {
@@ -22,9 +50,15 @@ char checkWin(char gameboard[11][11], int size)
         }
 
         if (allX)
+        {
+            last_win_type = WIN_ROW;
             return 'x';
+        }
         if (allO)
+        {
+            last_win_type = WIN_ROW;
             return 'o';
+        }
     }
 
     /* check columns */
@@ -43,9 +77,15 @@ char checkWin(char gameboard[11][11], int size)
         }
 
         if (allX)
+        {
+            last_win_type = WIN_COL;
             return 'x';
+        }
         if (allO)
+        {
+            last_win_type = WIN_COL;
             return 'o';
+        }
     }
 
     /* main diagonal */
@@ -63,9 +103,15 @@ char checkWin(char gameboard[11][11], int size)
         }
 
         if (allX)
+        {
+            last_win_type = WIN_MAIN_DIAG;
             return 'x';
+        }
         if (allO)
+        {
+            last_win_type = WIN_MAIN_DIAG;
             return 'o';
+        }
     }
 
     /* anti-diagonal */
@@ -83,11 +129,18 @@ char checkWin(char gameboard[11][11], int size)
         }
 
         if (allX)
+        {
+            last_win_type = WIN_ANTI_DIAG;
             return 'x';
+        }
         if (allO)
+        {
+            last_win_type = WIN_ANTI_DIAG;
             return 'o';
+        }
     }
 
+    last_win_type = WIN_NONE;
     return 'b'; /* no winner */
 }
 
@@ -128,6 +181,97 @@ void printBoard(char gameboard[11][11], int size)
     }
 }
 
+GameStats *createGameStats()
+{
+    GameStats *s = malloc(sizeof(GameStats));
+    if (!s)
+        return NULL;
+    s->games_played = 0;
+    s->wins_player1 = 0;
+    s->wins_player2 = 0;
+    s->draws = 0;
+    s->pattern_capacity = 10;
+    s->pattern_count = 0;
+    s->win_patterns = malloc(sizeof(int) * s->pattern_capacity);
+    if (!s->win_patterns)
+    {
+        free(s);
+        return NULL;
+    }
+    return s;
+}
+
+void updateStats(GameStats *stats, char winner, int win_type)
+{
+    if (!stats)
+        return;
+
+    stats->games_played++;
+
+    if (winner == 'b')
+        stats->draws++;
+    else if (winner == currentP1)
+        stats->wins_player1++;
+    else if (winner == currentP2)
+        stats->wins_player2++;
+
+    if (win_type != WIN_NONE)
+    {
+        if (stats->pattern_count == stats->pattern_capacity)
+        {
+            int newCap = stats->pattern_capacity * 2;
+            int *tmp = realloc(stats->win_patterns, sizeof(int) * newCap);
+            if (tmp)
+            {
+                stats->win_patterns = tmp;
+                stats->pattern_capacity = newCap;
+            }
+        }
+        if (stats->pattern_count < stats->pattern_capacity)
+        {
+            stats->win_patterns[stats->pattern_count] = win_type;
+            stats->pattern_count++;
+        }
+    }
+}
+
+void freeGameStats(GameStats *stats)
+{
+    if (!stats)
+        return;
+    free(stats->win_patterns);
+    free(stats);
+}
+
+void printStatistics(const GameStats *stats)
+{
+    if (!stats)
+        return;
+    printf("\n=== Game statistics ===\n");
+    printf("Games played: %d\n", stats->games_played);
+    printf("Player1 wins: %d\n", stats->wins_player1);
+    printf("Player2 wins: %d\n", stats->wins_player2);
+    printf("Draws: %d\n", stats->draws);
+
+    int r = 0, c = 0, d1 = 0, d2 = 0;
+    for (int i = 0; i < stats->pattern_count; i++)
+    {
+        if (stats->win_patterns[i] == WIN_ROW)
+            r++;
+        else if (stats->win_patterns[i] == WIN_COL)
+            c++;
+        else if (stats->win_patterns[i] == WIN_MAIN_DIAG)
+            d1++;
+        else if (stats->win_patterns[i] == WIN_ANTI_DIAG)
+            d2++;
+    }
+    printf("Row wins: %d\n", r);
+    printf("Column wins: %d\n", c);
+    printf("Main diagonal wins: %d\n", d1);
+    printf("Anti-diagonal wins: %d\n", d2);
+    printf("=======================\n\n");
+}
+
 int initializeBoard(void)
 {
     int size = 0;
@@ -160,6 +304,13 @@ int main(void)
     int size = initializeBoard();
     int mode = modeSelect();
 
+    GameStats *stats = createGameStats();
+    if (!stats)
+    {
+        printf("could not alloc stats\n");
+        return 1;
+    }
+
     if (mode)
     { /* P2P */
 
@@ -173,6 +324,9 @@ int main(void)
         {
 
             clearBoard(board, size);
+
+            currentP1 = p1Mark;
+            currentP2 = p2Mark;
 
             int startingPlayer = (p1Mark == 'x') ? 1 : 2;
             int player = startingPlayer;
@@ -232,6 +386,8 @@ int main(void)
                 printf("It's a draw.\n");
             }
 
+            updateStats(stats, winner, last_win_type);
+
             printf("Score: Player1=%d, Player2=%d\n", p1, p2);
 
             printf("Play again (y/n): ");
@@ -257,6 +413,9 @@ int main(void)
         {
 
             clearBoard(board, size);
+
+            currentP1 = p1Mark;
+            currentP2 = aiMark;
 
             int startingPlayer = (p1Mark == 'x') ? 1 : 2;
             int player = startingPlayer;
@@ -398,6 +557,8 @@ int main(void)
                 printf("It's a draw.\n");
             }
 
+            updateStats(stats, winner, last_win_type);
+
             printf("Score: Player1=%d, Computer=%d\n", p1, ai);
 
             printf("Play again (y/n): ");
@@ -411,6 +572,9 @@ int main(void)
             aiMark = tmp;
         }
     }
+
+    printStatistics(stats);
+    freeGameStats(stats);
 
     return 0;
 }
